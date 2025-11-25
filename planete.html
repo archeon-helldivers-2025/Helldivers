@@ -60,23 +60,59 @@
 <body>
     <h1><a href="index.html">Générale</a></h1>
     <h1 id="planet-title">Planète : ...</h1>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-    <script>
-        // ----------------------
-        // 🔥 Récupérer les paramètres de l’URL
-        // ----------------------
-        const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.search);
+    const planetID = params.get("id");
+    const planetName = params.get("name");
 
-        const planetName = params.get("name");  // ?name=...
-        const planetID = params.get("id");    // ?id=...
+    if (planetID) {
+        document.getElementById("planet-title").textContent =
+            "Planète numéro : " + planetID + " - Nom : " + planetName;
+    }
 
-        // Remplir le titre
-        if (planetID) {
-            document.getElementById("planet-title").textContent = "Planète numéro : " + planetID;
-            
+    async function chargerStats() {
+        try {
+            const response = await fetch(
+                "https://api-hellhub-collective.koyeb.app/api/planets/" + planetID + "/statistics"
+            );
+            const reponse = await response.json();
+
+            // ---- Ennemis ----
+            const auto = reponse.data.automatonKills;
+            const illu = reponse.data.illuminateKills;
+            const bug = reponse.data.bugKills;
+            const totalEnemis = auto + illu + bug;
+
+            document.getElementById("automatonsMorts").textContent = auto;
+            document.getElementById("MortsIluministes").textContent = illu;
+            document.getElementById("Terminides").textContent = bug;
+            document.getElementById("EnemisMortsGenerale").textContent = totalEnemis;
+
+            // ---- Alliés ----
+            document.getElementById("mortsAlliees").textContent = reponse.data.friendlyKills || 0;
+
+            // ---- Autres stats ----
+            document.getElementById("tempsJoue").textContent = reponse.data.timePlayed || "0s";
+            document.getElementById("missionsReussies").textContent = reponse.data.missionsWon || 0;
+            document.getElementById("missionsPerdues").textContent = reponse.data.missionsLost || 0;
+            document.getElementById("touches").textContent = reponse.data.bulletsHit || 0;
+
+        } catch (err) {
+            console.error("Erreur lors du chargement des stats :", err);
         }
+    }
 
-    </script>
+    // Charger les stats
+    chargerStats();
+
+    // Option : rafraîchissement automatique toutes les 10 secondes
+    setInterval(chargerStats, 10000);
+});
+</script>
+
+
 
     <div class="hd2-border scan-effect">
         <h1>Système d’Ordre Supérieur</h1>
@@ -85,4 +121,16 @@
 
 </body>
 
+</html>
+<div>
+    <h2>Morts Ennemis</h2>
+    <h3>Morts Ennemis (Général) : <span id="EnemisMortsGenerale"></span></h3>
+    <h3>Morts Automatons : <span id="automatonsMorts"></span></h3>
+    <h3>Morts Illuministes : <span id="MortsIluministes"></span></h3>
+    <h3>Morts Terminides : <span id="Terminides"></span></h3>
+     <h3>Morts Alliées : <span id="mortsAlliees"></span></h3>
+    <h3>Temps Joué : <span id="tempsJoue"></span></h3>
+    <h3>Missions Réussies : <span id="missionsReussies"></span></h3>
+    <h3>Missions Perdues : <span id="missionsPerdues"></span></h3>
+    <h3>Touches : <span id="touches"></span></h3>
 </html>

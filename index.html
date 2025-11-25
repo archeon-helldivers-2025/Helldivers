@@ -54,8 +54,6 @@
                 top: 100%;
             }
         }
-    </style>
-    <style>
 
         #map {
             position: relative;
@@ -94,10 +92,20 @@
             font-size: 14px;
         }
     </style>
+</head>
 
-    <script>
+<body>
+
+<script>
         async function loadSectors() {
             const res = await fetch("https://api-hellhub-collective.koyeb.app/api/sectors");
+
+            const json = await res.json();
+            return json.data;
+        }
+
+        async function loadGalaxyStats() {
+            const res = await fetch("https://api-hellhub-collective.koyeb.app/api/statistics/galaxy");
 
             const json = await res.json();
             return json.data;
@@ -119,8 +127,8 @@
 
             const div = document.createElement("div");
             div.className = "sector";
-           // div.style.left = 1 + "%";
-           // div.style.top = y + "%";
+            // div.style.left = 1 + "%";
+            // div.style.top = y + "%";
             div.innerText = sector.name;
 
             div.onclick = async () => {
@@ -138,22 +146,38 @@
         <strong>Planètes :</strong>
         <ul>
             ${planets.map(p => `
-            <li><a href="planete.html?id=${p.id}">${p.name}</a> — (x: ${p.positionX}, y: ${p.positionY}) Nombre de Helldivers : ${p.players} Mise à jour : ${p.updatedAt} </li>
+            <li><a href="planete.html?id=${p.id}&name=${p.name}">${p.name}</a> — (x: ${p.positionX}, y: ${p.positionY}) Nombre de Helldivers : ${p.players} Mise à jour : ${p.updatedAt} </li>
             `).join("")}
         </ul>
     `;
         }
 
         (async () => {
+            console.log('test');
             const sectors = await loadSectors();
             sectors.forEach(drawSector);
+
+
+            const galaxyStats = await loadGalaxyStats();
+            console.log(galaxyStats);
+            const mortEnemisTotal =   galaxyStats.automatonKills +
+    galaxyStats.illuminateKills +
+    galaxyStats.bugKills;
+
+
+// Affiche la somme totale
+document.getElementById('EnemisMortsGenerale').textContent = mortEnemisTotal;
+            document.getElementById('automatonsMorts').textContent = JSON.stringify(galaxyStats.automatonKills, null, 2);
+            document.getElementById('MortsIluministes').textContent = JSON.stringify(galaxyStats.illuminateKills, null, 2);
+            document.getElementById('Terminides').textContent = JSON.stringify(galaxyStats.bugKills, null, 2);
+            document.getElementById('MunitionenGenerale').textContent = JSON.stringify(galaxyStats.bulletsFired, null, 2);
         })();
+
+
+
+
+
     </script>
-</head>
-
-<body>
-
-
     <h1>Bienvenue </h1>
     <div>
         <h2>Carte </h2>
@@ -165,36 +189,21 @@
 
     </div>
 
-    <div>
-        <h2>Morts Alliés</h2>
-        <h3>Morts Alliée : 938 700 611</h3>
-    </div>
+    TEST
     <div>
         <h2>Morts Enemis </h2>
-        <h3>Morts Enemie (Génerale) : 280 000 000 000 </h3>
-        <h3>Morts Automatons : 1 200 000 000 </h3>
-        <h3>Morts Iluministes : 083 000 000</h3>
-        <h3>Terminides : 783 900 000</h3>
+        <h3>Morts Enemie (Génerale) : <span id="EnemisMortsGenerale"></span> </h3>
+        <h3>Morts Automatons : <span id="automatonsMorts"></span> </h3>
+        <h3>Morts Iluministes : <span id="MortsIluministes"></span></h3>
+        <h3>Morts Terminides : <span id="Terminides"></span></h3>
     </div>
     <div>
         <h2>Munition utilisée</h2>
-        <h3>Munition en Générale : 1 000 000 000 000</h3>
-        <h3>Munition des Principale : 053 250 000 000</h3>
-        <h3>Munition des Arme Secondaires : 1</h3>
-        <h3>Tire Alliés : 1</h3>
-    </div>
-    <div>
-        <h2>Stratagéme utilisée </h2>
-        <h3>Frappe Orbitale : 1 </h3>
-        <h3>Frappe d'Aigle : 1 </h3>
-        <h3>Dont Bombardement : 1</h3>
-        <h3>Autre : 1</h3>
-    </div>
-    <div>
-        <h3>Nombre de jours Joués : 1 </h3>
+        <h3>Munition en Générale : <span id="MunitionenGenerale"></span> </h3>
+
     </div>
 
-</body>
+
 <div>
     <h2>Secteurs </h2>
     <div id="map"></div>
