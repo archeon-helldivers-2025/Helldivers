@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Secteur</title>
+</head>
+
+<body>
+
+    <img src="" alt="Mon image de test" />
+    <h1>Secteur </h1>
+    
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exemple de navigation</title>
+</head>
+<body>
+    <h1><a href="index.html">Générale</a></h1>
+</body>
+</html>
+
+</html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Exemple de navigation</title>
+</head>
+
+<body>
+    <h1><a href="planete.html">Planete
+
+        </a></h1>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Style Helldivers 2</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap');
+
+    body {
+        background: #0a0a0f;
+        color: #f6e07d;
+        font-family: 'Oswald', sans-serif;
+        text-transform: uppercase;
+        margin: 0;
+        padding: 40px;
+        letter-spacing: 2px;
+    }
+
+    .hd2-border {
+        border: 2px solid #2b2e3b;
+        padding: 20px;
+        width: fit-content;
+        background: rgba(20, 25, 35, 0.6);
+        box-shadow: 0 0 20px #1f2330;
+    }
+
+    .scan-effect {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .scan-effect::after {
+        content: "";
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0.1) 50%,
+            rgba(255,255,255,0) 100%
+        );
+        animation: scan 3s linear infinite;
+    }
+
+    @keyframes scan {
+        0% { top: -100%; }
+        100% { top: 100%; }
+    }
+</style>
+
+</head>
+<body>
+
+<div class="hd2-border scan-effect">
+    <h1>Système d’Ordre Supérieur</h1>
+    <p>Gloire à la super-terre • Rapport automatique</p>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Helldivers 2 - Sectors & Planets</title>
+    <style>
+        body { font-family: Arial; background:#111; color:white; padding:20px; }
+        .item { cursor:pointer; padding:10px; margin:5px 0; background:#222; border-radius:5px; }
+        .item:hover { background:#333; }
+        h2 { margin-top:30px; }
+        pre { background:#000; padding:10px; border-radius:5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+<h1>🌌 Sectors</h1>
+
+<div id="sectors">Chargement…</div>
+
+<h2 id="sectorTitle"></h2>
+<div id="sectorInfo"></div>
+
+<h2 id="planetTitle"></h2>
+<div id="planetInfo"></div>
+
+<script>
+const API_HEADERS = {
+    "X-Super-Client": "mon-site-web",
+    "X-Super-Contact": "mon-email@example.com"
+};
+
+// --------------------
+// Charger tous les secteurs
+// --------------------
+async function loadSectors() {
+    const res = await fetch("https://api-hellhub-collective.koyeb.app/api/sectors", { headers: API_HEADERS });
+    const json = await res.json();
+    return json.data;
+}
+
+// --------------------
+// Charger les infos d’un secteur
+// --------------------
+async function loadSector(id) {
+    const res = await fetch(`https://api-hellhub-collective.koyeb.app/api/sectors/${id}`, { headers: API_HEADERS });
+    const json = await res.json();
+    return json.data;
+}
+
+// --------------------
+// Charger les infos d’une planète
+// --------------------
+async function loadPlanet(id) {
+    const res = await fetch(`https://api-hellhub-collective.koyeb.app/api/sectors/1/planets/${id}`, { headers: API_HEADERS });
+    const json = await res.json();
+    return json.data;
+}
+
+// ------------------------------------------
+// AFFICHER LISTE DES SECTEURS
+// ------------------------------------------
+loadSectors().then(sectors => {
+    const container = document.getElementById("sectors");
+    container.innerHTML = "";
+
+    sectors.forEach(sector => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = sector.name;
+        div.onclick = () => showSector(sector.id);
+        container.appendChild(div);
+    });
+});
+
+// ------------------------------------------
+// Quand on clique sur un secteur
+// ------------------------------------------
+async function showSector(id) {
+    const sector = await loadSector(id);
+
+    document.getElementById("planetInfo").innerHTML = "";
+    document.getElementById("planetTitle").innerHTML = "";
+
+    document.getElementById("sectorTitle").textContent = "🛰️ Secteur : " + sector.name;
+
+    document.getElementById("sectorInfo").innerHTML = `
+        <p><b>ID :</b> ${sector.id}</p>
+        <p><b>Description :</b> ${sector.description || "Aucune"}</p>
+        <h3>🌍 Planètes :</h3>
+    `;
+
+    sector.planets.forEach(planet => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = planet.name;
+        div.onclick = () => showPlanet(planet.id);
+        document.getElementById("sectorInfo").appendChild(div);
+    });
+}
+
+// ------------------------------------------
+// Quand on clique sur une planète
+// ------------------------------------------
+async function showPlanet(id) {
+    const planet = await loadPlanet(id);
+
+    document.getElementById("planetTitle").textContent = "🌍 Planète : " + planet.name;
+
+    document.getElementById("planetInfo").innerHTML = `
+        <p><b>Biome :</b> ${planet.biome}</p>
+        <p><b>Niveau :</b> ${planet.max_difficulty}</p>
+        <p><b>Taux de libération :</b> ${planet.liberation || "?"}%</p>
+        <p><b>Description :</b> ${planet.description || "Aucune"}</p>
+
+        <h3>Données brutes :</h3>
+        <pre>${JSON.stringify(planet, null, 2)}</pre>
+    `;
+}
+</script>
+
+</body>
+</html>
+

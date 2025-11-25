@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Accueil</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap');
+
+        body {
+            background: #0a0a0f;
+            color: #f6e07d;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            margin: 0;
+            padding: 40px;
+            letter-spacing: 2px;
+        }
+
+        .hd2-border {
+            border: 2px solid #2b2e3b;
+            padding: 20px;
+            width: fit-content;
+            background: rgba(20, 25, 35, 0.6);
+            box-shadow: 0 0 20px #1f2330;
+        }
+
+        .scan-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-effect::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: -100%;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+    </style>
+    <style>
+
+        #map {
+            position: relative;
+            width: 50vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, #10141f, #05060a);
+            border: 2px solid #2b2e3b;
+        }
+
+        .sector {
+            position: relative;
+            background: rgba(255, 230, 120, 0.15);
+            border: 1px solid #f6e07d;
+            padding: 5px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.15s;
+        }
+
+        .sector:hover {
+            background: rgba(255, 230, 120, 0.35);
+            scale: 1.1;
+        }
+
+        #info {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 180px;
+            background: rgba(10, 10, 15, 0.9);
+            border-top: 2px solid #2b2e3b;
+            padding: 15px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+    </style>
+
+    <script>
+        async function loadSectors() {
+            const res = await fetch("https://api-hellhub-collective.koyeb.app/api/sectors");
+
+            const json = await res.json();
+            return json.data;
+        }
+
+
+        async function loadPlanetsOfSector(id) {
+            const res = await fetch(`https://api-hellhub-collective.koyeb.app/api/sectors/${id}/planets`);
+            const json = await res.json();
+            return json.data;
+        }
+
+        function drawSector(sector) {
+            const map = document.getElementById("map");
+
+            // Simulation d’une position (dans la vraie API, il n’y a pas de coordonnées de secteurs)
+            const x = ((sector.index + 1) % 10) * 10 + 10;
+            const y = Math.floor((sector.index + 1) / 10) * 15 + 10;
+
+            const div = document.createElement("div");
+            div.className = "sector";
+           // div.style.left = 1 + "%";
+           // div.style.top = y + "%";
+            div.innerText = sector.name;
+
+            div.onclick = async () => {
+                const planets = await loadPlanetsOfSector(sector.id);
+                displayInfo(sector, planets);
+            };
+
+            map.appendChild(div);
+        }
+
+        function displayInfo(sector, planets) {
+            const info = document.getElementById("info");
+            info.innerHTML = `
+        <h2>${sector.name}</h2>
+        <strong>Planètes :</strong>
+        <ul>
+            ${planets.map(p => `
+            <li><a href="planete.html?id=${p.id}">${p.name}</a> — (x: ${p.positionX}, y: ${p.positionY}) Nombre de Helldivers : ${p.players} Mise à jour : ${p.updatedAt} </li>
+            `).join("")}
+        </ul>
+    `;
+        }
+
+        (async () => {
+            const sectors = await loadSectors();
+            sectors.forEach(drawSector);
+        })();
+    </script>
+</head>
+
+<body>
+
+
+    <h1>Bienvenue </h1>
+    <div>
+        <h2>Carte </h2>
+        <img src="téléchargement.jfif" alt="Description de l'image">
+    </div>
+
+    <div>
+        <h2>Secteurs & planetes</h2>
+
+    </div>
+
+    <div>
+        <h2>Morts Alliés</h2>
+        <h3>Morts Alliée : 938 700 611</h3>
+    </div>
+    <div>
+        <h2>Morts Enemis </h2>
+        <h3>Morts Enemie (Génerale) : 280 000 000 000 </h3>
+        <h3>Morts Automatons : 1 200 000 000 </h3>
+        <h3>Morts Iluministes : 083 000 000</h3>
+        <h3>Terminides : 783 900 000</h3>
+    </div>
+    <div>
+        <h2>Munition utilisée</h2>
+        <h3>Munition en Générale : 1 000 000 000 000</h3>
+        <h3>Munition des Principale : 053 250 000 000</h3>
+        <h3>Munition des Arme Secondaires : 1</h3>
+        <h3>Tire Alliés : 1</h3>
+    </div>
+    <div>
+        <h2>Stratagéme utilisée </h2>
+        <h3>Frappe Orbitale : 1 </h3>
+        <h3>Frappe d'Aigle : 1 </h3>
+        <h3>Dont Bombardement : 1</h3>
+        <h3>Autre : 1</h3>
+    </div>
+    <div>
+        <h3>Nombre de jours Joués : 1 </h3>
+    </div>
+
+</body>
+<div>
+    <h2>Secteurs </h2>
+    <div id="map"></div>
+    <div id="info">Clique sur un secteur pour voir ses planètes…</div>
+</div>
+
+
+<div class="hd2-border scan-effect">
+    <h1>Système d’Ordre Supérieur</h1>
+    <p>Gloire à la super-terre • Rapport automatique</p>
+</div>
+
+</body>
+
+</html>

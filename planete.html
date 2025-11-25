@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Style Helldivers 2</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap');
+
+        body {
+            background: #0a0a0f;
+            color: #f6e07d;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            margin: 0;
+            padding: 40px;
+            letter-spacing: 2px;
+        }
+
+        .hd2-border {
+            border: 2px solid #2b2e3b;
+            padding: 20px;
+            width: fit-content;
+            background: rgba(20, 25, 35, 0.6);
+            box-shadow: 0 0 20px #1f2330;
+        }
+
+        .scan-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scan-effect::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: -100%;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1><a href="index.html">Générale</a></h1>
+    <h1 id="planet-title">Planète : ...</h1>
+
+    <script>
+        // ----------------------
+        // 🔥 Récupérer les paramètres de l’URL
+        // ----------------------
+        const params = new URLSearchParams(window.location.search);
+
+        const planetName = params.get("name");  // ?name=...
+        const planetID = params.get("id");    // ?id=...
+
+        // Remplir le titre
+        if (planetID) {
+            document.getElementById("planet-title").textContent = "Planète numéro : " + planetID;
+            
+        }
+
+    </script>
+
+    <div class="hd2-border scan-effect">
+        <h1>Système d’Ordre Supérieur</h1>
+        <p>Gloire à la super-terre • Rapport automatique</p>
+    </div>
+
+</body>
+
+</html>
