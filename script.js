@@ -12,7 +12,7 @@
 
     (async () => {
         const planets = await loadPlanetsOfSector(id);
-        displayInfo(sector, planets);
+        displayInfo(planets);
     })();
 }
 
@@ -22,10 +22,9 @@ async function loadPlanetsOfSector(id) {
     return json.data;
 }
 
-function displayInfo(sector, planets) {
+function displayInfo( planets) {
     const info = document.getElementById("info");
-    info.innerHTML = `
-             b 
+    info.innerHTML = ` 
         <strong>Planètes :</strong>
         <ul>
             ${planets.map(p => `
@@ -69,9 +68,9 @@ async function loadGalaxyStats() {
         
 
         (async () => {
-            console.log('test');
-            const sectors = await loadSectors();
-            sectors.forEach(drawSector);
+           
+           // const sectors = await loadSectors();
+            //sectors.forEach(drawSector);
 
 
             const galaxyStats = await loadGalaxyStats();
