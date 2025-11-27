@@ -5,14 +5,13 @@
     <meta charset="UTF-8">
     <title>Style Helldivers 2</title>
 
-   
-   <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-    <h1><a href="index.html">Générale</a></h1>
-    <h1 id="planet-title">Planète : ...</h1>
+    <h1><a href="index.html">Retourner à l'Accueil</a></h1>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
@@ -69,36 +68,40 @@
     </script>
 
 
-
-    <div class="hd2-border scan-effect">
-        <h1>Système d’Ordre Supérieur</h1>
-        <p>Gloire à la super-terre • Rapport automatique</p>
+<div class="grid">
+    <div class="item">
+        <div class="item">
+            <div class="hd2-border scan-effect">
+                <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOG1zeTVxYTVwdnNpd2MwNXl3Z2xneWk5MmJpMnM2NGc4b3Ntczl6ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JkffVsEJTlpD2/giphy.gif"
+                    alt="Helldivers 2" style="max-width: 90%;">
+                <h1 id="planet-title">Planète : ...</h1>
+                <p>Gloire à la super-terre • Rapport automatique</p>
+            </div>
+        </div>
     </div>
+    <div class="item">
+        <div id="planet-stats">
+            <!-- Statistiques ici -->
+            <h2>Morts Ennemis</h2>
+            <h3>Morts Ennemis (Général) : <span id="EnemisMortsGenerale"></span></h3>
+            <h3>Morts Automatons : <span id="automatonsMorts"></span></h3>
+            <h3>Morts Illuministes : <span id="MortsIluministes"></span></h3>
+            <h3>Morts Terminides : <span id="Terminides"></span></h3>
+            <h3>Morts Alliées : <span id="mortsAlliees"></span></h3>
+            <h3>Temps Joué : <span id="tempsJoue"></span></h3>
+            <h3>Missions Réussies : <span id="missionsReussies"></span></h3>
+            <h3>Missions Perdues : <span id="missionsPerdues"></span></h3>
+            <h3>Touches : <span id="touches"></span></h3>
+        </div>
+
+        <div id="error-message" style="display: none; text-align: center; margin-top: 20px;">
+            <h2>Cette planète n'a pas de statistique !</h2>
+            <img src="https://i.redd.it/w4kqnen05vkc1.gif" alt="Helldivers 2" style="max-width: 300px;">
+        </div>
+    </div>
+</div>
 
 </body>
-
-</html>
-
-<div id="planet-stats">
-    <!-- Statistiques ici -->
-    <h2>Morts Ennemis</h2>
-    <h3>Morts Ennemis (Général) : <span id="EnemisMortsGenerale"></span></h3>
-    <h3>Morts Automatons : <span id="automatonsMorts"></span></h3>
-    <h3>Morts Illuministes : <span id="MortsIluministes"></span></h3>
-    <h3>Morts Terminides : <span id="Terminides"></span></h3>
-    <h3>Morts Alliées : <span id="mortsAlliees"></span></h3>
-    <h3>Temps Joué : <span id="tempsJoue"></span></h3>
-    <h3>Missions Réussies : <span id="missionsReussies"></span></h3>
-    <h3>Missions Perdues : <span id="missionsPerdues"></span></h3>
-    <h3>Touches : <span id="touches"></span></h3>
-</div>
-
-<div id="error-message" style="display: none; text-align: center; margin-top: 20px;">
-    <h2>Cette planète n'a pas de statistique !</h2>
-    <img src="https://i.redd.it/w4kqnen05vkc1.gif" alt="Helldivers 2" style="max-width: 300px;">
-</div>
-
-
 </html>
 
 <script>// Charger les stats immédiatement
