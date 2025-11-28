@@ -13,6 +13,18 @@
     text-align: center;
 }
 
+#blocTitle {
+  overflow: hidden;
+}
+
+#imageTitle {
+    max-width: 90%;
+  /* width: 100%; */
+  height: 100%;
+  object-fit: cover;
+}
+
+
 .carte {
     width: 90%;
     /* largeur obligatoire */

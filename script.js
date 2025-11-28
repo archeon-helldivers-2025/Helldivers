@@ -1,6 +1,93 @@
  
+const paths = document.querySelectorAll("#Sectors path");
 
+paths.forEach((p, i) => {
+  const length = p.getTotalLength();
+  p.style.strokeDasharray = length;
+  p.style.strokeDashoffset = length;
+
+  gsap.to(p, {
+    strokeDashoffset: 0,
+    duration: 0.5,
+    delay: i * 0.1, // effet de cascade
+    ease: "power2.out"
+  });
+});
+
+
+// gsap.from("#blocTitle", {
+//   position: "fixed",
+//   width: "100vw",
+//   height: "100vh",
+//   objectFit: "cover",
+//   duration: 40,
+//   ease: "power2.inOut"
+// });
  
+// gsap.from("#imageTitle", {
+//   scale: 4,
+//   transformOrigin: "50% 50%",
+//   duration: 8,
+//   ease: "expo.out"
+// });
+
+const img = document.querySelector('#imageTitle');
+const clone = img.cloneNode(true);
+document.body.appendChild(clone);
+img.style.visibility = 'hidden';
+
+// Prépare la position finale dans la grille
+const finalRect = img.getBoundingClientRect();
+
+clone.style.position = 'fixed';
+clone.style.margin = '0';
+clone.style.zIndex = 9999;
+clone.style.top = finalRect.top + 'px';
+clone.style.left = finalRect.left + 'px';
+clone.style.width = finalRect.width + 'px';
+clone.style.height = finalRect.height + 'px';
+clone.style.transformOrigin = 'center center';
+
+// Timeline GSAP
+const tl = gsap.timeline();
+
+// Étape 1: passe en plein écran, centré
+tl.set(clone, {
+  top: '50%',
+  left: '50%',
+  width: '100vw',
+  height: '100vh',
+  xPercent: -50,
+  yPercent: -50,
+  scale: 1.2,
+});
+
+// Étape 2: revient à la position dans la grille
+tl.to(clone, {
+  duration: 3,
+  top: finalRect.top,
+  left: finalRect.left,
+  width: finalRect.width,
+  height: finalRect.height,
+  scale: 1,
+  xPercent: 0,
+  yPercent: 0,
+  ease: "power2.inOut",
+});
+
+// À la fin : supprimer clone et afficher l'image originale
+tl.add(() => {
+  clone.remove();
+  img.style.visibility = 'visible';
+});
+
+
+
+
+
+
+
+
  async function loadSectors() {
     const res = await fetch("https://api-hellhub-collective.koyeb.app/api/sectors");
 
@@ -108,7 +195,7 @@ async function loadGalaxyStats() {
           const text = el.dataset.desc;
 
           // Si pas de texte → ne pas afficher/pousser la boite
-          if (!text || text.trim() === "") return;
+          if (!text || text.trim() === "") return ;
 
           const offset = 15;
           tooltip.style.left = e.clientX + offset + "px";
@@ -119,5 +206,7 @@ async function loadGalaxyStats() {
           tooltip.style.display = "none";
         });
       });
+      
+      
 
 

@@ -6,22 +6,17 @@
     <meta name="viewport" content="width=device-width" />
     <title>Accueil</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon2.webp">
 </head>
 
 <body>
 
     <h1>Bienvenue </h1>
 
-
-
-
-
-
-
     <div class="grid">
         <div class="item">
-            <div class="hd2-border scan-effect">
-                <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/553850/extras/SuperEarthSTEAM.gif?t=1707382710" alt="Helldivers 2" style="max-width: 90%;">
+            <div id="blocTitle" class="hd2-border scan-effect">
+                <img id="imageTitle" src="https://cdn.cloudflare.steamstatic.com/steam/apps/553850/extras/SuperEarthSTEAM.gif?t=1707382710" alt="Helldivers 2" >
                 <h1>Système d’Ordre Supérieur</h1>
                 <p>Gloire à la super-terre • Rapport automatique</p>
             </div>
@@ -332,7 +327,26 @@
         </div>
     </div>
 
+    
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/DrawSVGPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/TextPlugin.min.js"></script>
+
+    <script>
+        // use a script tag or an external JS file
+        document.addEventListener("DOMContentLoaded", (event) => {
+        gsap.registerPlugin(DrawSVGPlugin,ScrambleTextPlugin,SplitText,TextPlugin)
+        // gsap code here!
+        });
+
+
+    </script>
+
     <script src="script.js"></script>
 </body>
 
 </html>
+
