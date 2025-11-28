@@ -83,7 +83,18 @@ tl.add(() => {
 
 
 
+function animateCounter(element, start, end, duration = 2) {
+    const obj = { value: start };
 
+    gsap.to(obj, {
+        value: end,
+        duration: duration,
+        ease: "power1.out",
+        onUpdate: () => {
+            element.textContent = Math.floor(obj.value).toLocaleString("fr-FR");
+        }
+    });
+}
 
 
 
@@ -168,11 +179,11 @@ async function loadGalaxyStats() {
 
 
             // Affiche la somme totale
-            document.getElementById('EnemisMortsGenerale').textContent = mortEnemisTotal;
-            document.getElementById('automatonsMorts').textContent = JSON.stringify(galaxyStats.automatonKills, null, 2);
-            document.getElementById('MortsIluministes').textContent = JSON.stringify(galaxyStats.illuminateKills, null, 2);
-            document.getElementById('Terminides').textContent = JSON.stringify(galaxyStats.bugKills, null, 2);
-            document.getElementById('MunitionenGenerale').textContent = JSON.stringify(galaxyStats.bulletsFired, null, 2);
+            animateCounter(document.getElementById('EnemisMortsGenerale'), 5, mortEnemisTotal, 2);
+            animateCounter(document.getElementById('automatonsMorts'), 0, galaxyStats.automatonKills, 3);
+            animateCounter(document.getElementById('MortsIluministes'), 0, galaxyStats.illuminateKills, 4);
+            animateCounter(document.getElementById('Terminides'), 0, galaxyStats.bugKills, 5);
+            animateCounter(document.getElementById('MunitionenGenerale'), 0, galaxyStats.bulletsFired, 6);
         })();
 
         const tooltip = document.getElementById("sector-tooltip");
